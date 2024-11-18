@@ -15,3 +15,4 @@ pictures.forEach(({url, description, likes, comments}) => {
   fragment.append(picture);
 });
 picturesContainer.append(fragment);
+
