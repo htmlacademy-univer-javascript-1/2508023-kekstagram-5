@@ -65,4 +65,5 @@ const onPictureClick = (evt) => {
     document.querySelector('.comments-loader').classList.add('hidden');
   }
 };
+
 pictures.addEventListener('click', onPictureClick);
