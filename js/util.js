@@ -1,5 +1,5 @@
 import {NAMES, MESSAGES} from './data.js';
-//Генерирует случайное число из диапазона [a,b]
+
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -7,7 +7,6 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-//Создает комментарии к фотографиям
 const makeComments = () => {
   const commentsCount = getRandomInteger(0,30);
   const comments = [];
@@ -24,8 +23,7 @@ const makeComments = () => {
   }
   return comments;
 };
-//Создает массив объектов
-// eslint-disable-next-line no-unused-vars
+
 const makePhotoArray = () => {
   const photos = [];
   for (let i = 1; i <= 25; i++){
@@ -39,4 +37,7 @@ const makePhotoArray = () => {
   }
   return photos;
 };
-export {makePhotoArray};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+export {makePhotoArray, isEscapeKey, isEnterKey};
