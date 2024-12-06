@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const NAMES = ['keks', 'Саша', 'Ваня', 'Настя', 'Яна', 'Гриша', 'Никита', 'Андрей'];
+
 // eslint-disable-next-line no-unused-vars
 const MESSAGES = [
   'Всё отлично!',
