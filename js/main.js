@@ -1,1 +1,3 @@
-import './big-images.js';
+import './util.js';
+import './data.js';
+import './popup.js';

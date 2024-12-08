@@ -37,7 +37,7 @@ const makePhotoArray = () => {
   }
   return photos;
 };
-const isEscapeKey = (evt) => evt.key === 'Escape';
-const isEnterKey = (evt) => evt.key === 'Enter';
 
-export {makePhotoArray, isEscapeKey, isEnterKey};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {makePhotoArray, isEscapeKey};
