@@ -2,7 +2,7 @@ import {pictures as photos} from './images.js';
 import {isEscapeKey} from './util.js';
 
 const commentListElement = document.querySelector('.social__comments');
-const bodyElement = document.querySelector('body');
+const body = document.querySelector('body');
 const openElement = document.querySelector('.big-picture');
 const closeElement = document.querySelector('.big-picture__cancel');
 const picturesElement = document.querySelector('.pictures');
@@ -53,7 +53,7 @@ const onLoadMore = (evt) => {
 
 function closePicture() {
   openElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
@@ -66,7 +66,7 @@ const onPictureClick = (evt) => {
     photoItem = photo;
     uploadedComments = COMMENTS_TO_LOAD_COUNT;
     openElement.classList.remove('hidden');
-    bodyElement.classList.add('modal-open');
+    body.classList.add('modal-open');
     document.addEventListener('keydown', onDocumentKeydown);
     bigPictureElement.src = photo.url;
     bigPictureElement.alt = photo.description;
