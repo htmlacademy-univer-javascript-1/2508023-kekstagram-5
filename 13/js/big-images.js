@@ -74,16 +74,20 @@ const onPictureClick = (evt) => {
       bigPictureElement.alt = photo.description;
       document.querySelector('.social__caption').textContent = photo.description;
       document.querySelector('.likes-count').textContent = photo.likes;
-      if (photo.comments.length < uploadedComments){
+
+      if (photo.comments.length <= uploadedComments){
         uploadedComments = photo.comments.length;
       }
+
       commentCount.textContent = `${uploadedComments} из ${photo.comments.length} комментариев`;
       commentList.innerHTML = '';
+
       if (photo.comments.length <= COMMENTS_TO_LOAD_COUNT) {
         photo.comments.forEach((comment) => {
           commentList.append(makeComment(comment));
         });
-        loadMoreButton.classList.remove('hidden');
+
+        loadMoreButton.classList.add('hidden');
 
       } else {
         photo.comments.slice(0, COMMENTS_TO_LOAD_COUNT).forEach((comment) => {
