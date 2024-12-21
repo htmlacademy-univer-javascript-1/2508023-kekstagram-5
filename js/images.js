@@ -1,8 +1,7 @@
-import { makePhotoArray } from './util.js';
+import { pictures } from './api.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
-const pictures = makePhotoArray();
 const fragment = document.createDocumentFragment();
 
 pictures.forEach(({id, url, description, likes, comments}) => {
@@ -17,4 +16,4 @@ pictures.forEach(({id, url, description, likes, comments}) => {
 });
 picturesContainer.appendChild(fragment);
 
-export {pictures};
+export { pictures };
