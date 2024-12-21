@@ -1,7 +1,5 @@
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
 const ALERT_SHOW_TIME = 5000;
-
+const isEscapeKey = (evt) => evt.key === 'Escape';
 const showAlert = (message) => {
   const alert = document.createElement('div');
   alert.style.position = 'absolute';
