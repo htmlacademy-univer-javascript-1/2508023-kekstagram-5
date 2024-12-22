@@ -61,8 +61,6 @@ function closePicture() {
 const onPictureClick = (evt) => {
   const picture = evt.target.closest('.picture');
   if (picture !== null){
-    // eslint-disable-next-line no-console
-    console.log(photos);
     const pictureId = parseInt(picture.querySelector('.picture__img').id, 10);
     const photo = photos[pictureId];
     const bigPictureElement = document.querySelector('.big-picture__img img');
