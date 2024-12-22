@@ -1,4 +1,4 @@
-import {pictures as photos} from './images.js';
+import {pictures as photos} from './api.js';
 import {isEscapeKey} from './util.js';
 
 const COMMENTS_TO_LOAD_COUNT = 5;
@@ -23,20 +23,20 @@ const onDocumentKeydown = (evt) => {
 closeElement.addEventListener('click', closePicture);
 
 const makeComment = (comment) => {
-  const commentLiElement = document.createElement('li');
-  const commentImgElement = document.createElement('img');
-  const commentPElement = document.createElement('p');
-  commentLiElement.classList.add('social__comment');
-  commentImgElement.classList.add('social__picture');
-  commentImgElement.src = comment.avatar;
-  commentImgElement.alt = comment.name;
-  commentImgElement.width = 35;
-  commentImgElement.height = 35;
-  commentPElement.classList.add('social__text');
-  commentPElement.textContent = comment.message;
-  commentLiElement.append(commentImgElement);
-  commentLiElement.append(commentPElement);
-  return commentLiElement;
+  const commentLi = document.createElement('li');
+  const commentImg = document.createElement('img');
+  const commentP = document.createElement('p');
+  commentLi.classList.add('social__comment');
+  commentImg.classList.add('social__picture');
+  commentImg.src = comment.avatar;
+  commentImg.alt = comment.name;
+  commentImg.width = 35;
+  commentImg.height = 35;
+  commentP.classList.add('social__text');
+  commentP.textContent = comment.message;
+  commentLi.append(commentImg);
+  commentLi.append(commentP);
+  return commentLi;
 };
 
 const onLoadMore = (evt) => {
@@ -59,35 +59,44 @@ function closePicture() {
 }
 
 const onPictureClick = (evt) => {
-  const pictureElement = evt.target.closest('.picture');
-  const idElement = pictureElement.querySelector('.picture__img').id;
-  const photo = photos[idElement - 1];
-  const bigPictureElement = document.querySelector('.big-picture__img img');
-  if (pictureElement) {
-    photoItem = photo;
-    uploadedComments = COMMENTS_TO_LOAD_COUNT;
-    openElement.classList.remove('hidden');
-    body.classList.add('modal-open');
-    document.addEventListener('keydown', onDocumentKeydown);
-    bigPictureElement.src = photo.url;
-    bigPictureElement.alt = photo.description;
-    document.querySelector('.social__caption').textContent = photo.description;
-    document.querySelector('.likes-count').textContent = photo.likes;
-    document.querySelector('.comments-count').textContent = photo.comments.length;
-    commentList.innerHTML = '';
-    if (photo.comments.length <= COMMENTS_TO_LOAD_COUNT) {
-      photo.comments.forEach((comment) => {
-        commentList.append(makeComment(comment));
-      });
-      loadMoreButton.classList.remove('hidden');
+  const picture = evt.target.closest('.picture');
+  if (picture !== null){
+    const pictureId = parseInt(picture.querySelector('.picture__img').id, 10);
+    const photo = photos[pictureId];
+    const bigPictureElement = document.querySelector('.big-picture__img img');
+    if (picture) {
+      photoItem = photo;
+      uploadedComments = COMMENTS_TO_LOAD_COUNT;
+      openElement.classList.remove('hidden');
+      body.classList.add('modal-open');
+      document.addEventListener('keydown', onDocumentKeydown);
+      bigPictureElement.src = photo.url;
+      bigPictureElement.alt = photo.description;
+      document.querySelector('.social__caption').textContent = photo.description;
+      document.querySelector('.likes-count').textContent = photo.likes;
 
-    } else {
-      photo.comments.slice(0, COMMENTS_TO_LOAD_COUNT).forEach((comment) => {
-        commentList.append(makeComment(comment));
-      });
-      loadMoreButton.classList.remove('hidden');
+      if (photo.comments.length <= uploadedComments){
+        uploadedComments = photo.comments.length;
+      }
+
+      commentCount.textContent = `${uploadedComments} из ${photo.comments.length} комментариев`;
+      commentList.innerHTML = '';
+
+      if (photo.comments.length <= COMMENTS_TO_LOAD_COUNT) {
+        photo.comments.forEach((comment) => {
+          commentList.append(makeComment(comment));
+        });
+
+        loadMoreButton.classList.add('hidden');
+
+      } else {
+        photo.comments.slice(0, COMMENTS_TO_LOAD_COUNT).forEach((comment) => {
+          commentList.append(makeComment(comment));
+        });
+        loadMoreButton.classList.remove('hidden');
+      }
+      loadMoreButton.addEventListener('click', onLoadMore);
     }
-    loadMoreButton.addEventListener('click', onLoadMore);
   }
 };
 pictures.addEventListener('click', onPictureClick);

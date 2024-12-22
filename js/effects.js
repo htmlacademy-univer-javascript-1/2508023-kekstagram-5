@@ -108,4 +108,4 @@ const resetEffects = () => {
   updateSlider();
 };
 
-export {resetEffects, setEffectsSlider};
+export { resetEffects, setEffectsSlider };
