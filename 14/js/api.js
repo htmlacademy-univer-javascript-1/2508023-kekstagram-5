@@ -29,7 +29,6 @@ const load = (route, errorText, method = Method.GET, body = null) =>
 
 const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
-let pictures;
 
 try {
   const data = await getData();
@@ -40,4 +39,4 @@ try {
   showAlert(err.message);
 }
 
-export { pictures, sendData };
+export { sendData };
