@@ -1,4 +1,7 @@
-import { showAlert } from './util.js';
+import { showAlert, debounce } from './util.js';
+import { initFilter } from './filters.js';
+import { makePictures } from './images.js';
+
 const BASE_URL = 'https://29.javascript.htmlacademy.pro/kekstagram';
 const Route = {
   GET_DATA: '/data',
@@ -26,13 +29,14 @@ const load = (route, errorText, method = Method.GET, body = null) =>
 
 const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
-let pictures;
 
 try {
   const data = await getData();
-  pictures = data;
+  const debouncedRenderGallery = debounce(makePictures);
+  initFilter(data, debouncedRenderGallery);
+
 } catch (err) {
   showAlert(err.message);
 }
 
-export { pictures, sendData };
+export { sendData };

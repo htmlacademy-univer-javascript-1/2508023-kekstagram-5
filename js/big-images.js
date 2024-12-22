@@ -61,7 +61,7 @@ function closePicture() {
 const onPictureClick = (evt) => {
   const picture = evt.target.closest('.picture');
   if (picture !== null){
-    const pictureId = picture.querySelector('.picture__img').id;
+    const pictureId = parseInt(picture.querySelector('.picture__img').id, 10);
     const photo = photos[pictureId];
     const bigPictureElement = document.querySelector('.big-picture__img img');
     if (picture) {

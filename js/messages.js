@@ -2,12 +2,12 @@ const successMessage = document.querySelector('#success').content.querySelector(
 const errorMessage = document.querySelector('#error').content.querySelector('.error');
 const body = document.querySelector('body');
 
-function hideMessage() {
+const hideMessage = () => {
   const messageElement = document.querySelector('.success') || document.querySelector('.error');
   messageElement.remove();
   document.removeEventListener('keydown', onDocumentKeydown);
   body.removeEventListener('click', onBodyClick);
-}
+};
 
 function onBodyClick(evt) {
   if (

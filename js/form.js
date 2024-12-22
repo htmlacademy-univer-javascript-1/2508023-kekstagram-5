@@ -6,7 +6,7 @@ import { sendData } from './api.js';
 const CORRECT_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const body = document.querySelector('body');
-const form = document.querySelectorAll('.img-upload__form')[1];
+const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const overlayCloseButton = overlay.querySelector('.img-upload__cancel');
 const photoLoader = document.querySelector('.img-upload__input');
@@ -73,7 +73,6 @@ const checkHashtags = (value) => {
   const isValidUnique = new Set(newValue.map((tag) => tag.toLowerCase())).size === newValue.length;
   return isValidCount && isValidPattern && isValidUnique;
 };
-
 pristine.addValidator(hashtags, checkHashtags);
 
 const disableSubmitButton = (isDisabled) => {
@@ -97,8 +96,6 @@ const setOnFormSubmit = (callback) => {
 
 
 setOnFormSubmit(async (data) => {
-  // eslint-disable-next-line no-console
-  console.log('has been sent');
   try {
     await sendData(data);
     hideModal();
@@ -107,4 +104,3 @@ setOnFormSubmit(async (data) => {
     showErrorMessage();
   }
 });
-
