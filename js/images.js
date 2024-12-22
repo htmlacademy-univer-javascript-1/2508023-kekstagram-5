@@ -1,5 +1,6 @@
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
+let pictures;
 
 const makePictures = (picturesToDraw) => {
   picturesContainer.querySelectorAll('.picture').forEach((oldPicture) => {
@@ -20,6 +21,7 @@ const makePictures = (picturesToDraw) => {
   });
 
   picturesContainer.appendChild(fragment);
+  pictures = picturesToDraw;
 };
 
-export { makePictures };
+export { makePictures, pictures };
