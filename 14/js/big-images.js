@@ -1,4 +1,4 @@
-import {pictures as photos} from './api.js';
+import {pictures as photos} from './images.js';
 import {isEscapeKey} from './util.js';
 
 const COMMENTS_TO_LOAD_COUNT = 5;
