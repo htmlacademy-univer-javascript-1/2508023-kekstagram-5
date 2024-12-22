@@ -1,4 +1,4 @@
-import {pictures as photos} from './api.js';
+import {pictures as photos} from './images.js';
 import {isEscapeKey} from './util.js';
 
 const COMMENTS_TO_LOAD_COUNT = 5;
@@ -61,6 +61,8 @@ function closePicture() {
 const onPictureClick = (evt) => {
   const picture = evt.target.closest('.picture');
   if (picture !== null){
+    // eslint-disable-next-line no-console
+    console.log(photos);
     const pictureId = parseInt(picture.querySelector('.picture__img').id, 10);
     const photo = photos[pictureId];
     const bigPictureElement = document.querySelector('.big-picture__img img');
