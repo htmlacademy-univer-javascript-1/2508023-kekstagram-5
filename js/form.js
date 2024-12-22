@@ -4,15 +4,18 @@ import { showSuccessMessage, showErrorMessage } from './messages.js';
 import { sendData } from './api.js';
 
 const CORRECT_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const body = document.querySelector('body');
-const form = document.querySelectorAll('.img-upload__form')[1];
+const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const overlayCloseButton = overlay.querySelector('.img-upload__cancel');
 const photoLoader = document.querySelector('.img-upload__input');
 const comment = document.querySelector('.text__description');
 const hashtags = form.querySelector('.text__hashtags');
 const submitButton = form.querySelector('.img-upload__submit');
+const photoPreview = form.querySelector('.img-upload__preview img');
+const effectsPreviews = form.querySelectorAll('.effects__preview');
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SUBMITTING: 'Отправляю...',
@@ -53,27 +56,45 @@ const onKeyDownClose = (evt) => {
     body.removeEventListener('keydown', onKeyDownClose);
   }
 };
+const onFileChange = () => {
+  const file = photoLoader.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
-photoLoader.addEventListener('change', () => {
+  if (matches) {
+    photoPreview.src = URL.createObjectURL(file);
+    photoPreview.style.objectFit = 'contain';
+    photoPreview.style.maxWidth = '100%';
+    photoPreview.style.maxHeight = '100%';
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${URL.createObjectURL(file)}')`;
+    });
+  }
+
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   comment.addEventListener('keydown', onDocumentKeyDown);
   overlayCloseButton.addEventListener('click', onCloseButtonClick);
   body.addEventListener('keydown', onKeyDownClose);
-});
+};
+
+photoLoader.addEventListener('change', onFileChange);
+
 
 const checkHashtags = (value) => {
   const trimmedValue = value.trim();
+
   if (!trimmedValue) {
     return true;
   }
+
   const newValue = value.trim().split(/\s+/);
   const isValidCount = newValue.length <= 5;
   const isValidPattern = newValue.every((tag) => CORRECT_SYMBOLS.test(tag));
   const isValidUnique = new Set(newValue.map((tag) => tag.toLowerCase())).size === newValue.length;
+
   return isValidCount && isValidPattern && isValidUnique;
 };
-
 pristine.addValidator(hashtags, checkHashtags);
 
 const disableSubmitButton = (isDisabled) => {
@@ -89,7 +110,9 @@ const setOnFormSubmit = (callback) => {
 
     if (isValid) {
       disableSubmitButton(true);
-      await callback(new FormData(form));
+      const formData = new FormData(form);
+      formData.append('filename', photoLoader.files[0]); // Добавляем картинку в FormData
+      await callback(formData);
       disableSubmitButton();
     }
   });
@@ -97,8 +120,6 @@ const setOnFormSubmit = (callback) => {
 
 
 setOnFormSubmit(async (data) => {
-  // eslint-disable-next-line no-console
-  console.log('has been sent');
   try {
     await sendData(data);
     hideModal();
@@ -107,4 +128,3 @@ setOnFormSubmit(async (data) => {
     showErrorMessage();
   }
 });
-

@@ -13,6 +13,7 @@ const scaleImage = (newScaleValue) => {
 
 const onSmallerButtonClick = () => {
   const newScaleValue = parseInt(scale.value, 10) - SCALE_STEP;
+
   if (newScaleValue >= 25){
     scaleImage(newScaleValue);
   }
@@ -20,6 +21,7 @@ const onSmallerButtonClick = () => {
 
 const onBiggerButtonClick = () => {
   const newScaleValue = parseInt(scale.value, 10) + SCALE_STEP;
+
   if (newScaleValue <= 100) {
     scaleImage(newScaleValue);
   }

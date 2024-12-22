@@ -26,6 +26,7 @@ const makeComment = (comment) => {
   const commentLi = document.createElement('li');
   const commentImg = document.createElement('img');
   const commentP = document.createElement('p');
+
   commentLi.classList.add('social__comment');
   commentImg.classList.add('social__picture');
   commentImg.src = comment.avatar;
@@ -36,17 +37,22 @@ const makeComment = (comment) => {
   commentP.textContent = comment.message;
   commentLi.append(commentImg);
   commentLi.append(commentP);
+
   return commentLi;
 };
 
 const onLoadMore = (evt) => {
   evt.preventDefault();
+
   const maxCommentsToLoad = Math.min(photoItem.comments.length, uploadedComments + COMMENTS_TO_LOAD_COUNT);
+
   photoItem.comments.slice(uploadedComments, maxCommentsToLoad).forEach((comment) => {
     commentList.append(makeComment(comment));
   });
+
   uploadedComments = maxCommentsToLoad;
   commentCount.textContent = `${uploadedComments} из ${photoItem.comments.length} комментариев`;
+
   if (uploadedComments >= photoItem.comments.length) {
     loadMoreButton.classList.add('hidden');
   }
@@ -60,10 +66,12 @@ function closePicture() {
 
 const onPictureClick = (evt) => {
   const picture = evt.target.closest('.picture');
+
   if (picture !== null){
-    const pictureId = picture.querySelector('.picture__img').id;
+    const pictureId = parseInt(picture.querySelector('.picture__img').id, 10);
     const photo = photos[pictureId];
     const bigPictureElement = document.querySelector('.big-picture__img img');
+
     if (picture) {
       photoItem = photo;
       uploadedComments = COMMENTS_TO_LOAD_COUNT;
@@ -93,8 +101,10 @@ const onPictureClick = (evt) => {
         photo.comments.slice(0, COMMENTS_TO_LOAD_COUNT).forEach((comment) => {
           commentList.append(makeComment(comment));
         });
+
         loadMoreButton.classList.remove('hidden');
       }
+
       loadMoreButton.addEventListener('click', onLoadMore);
     }
   }
