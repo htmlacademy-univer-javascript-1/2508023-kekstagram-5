@@ -70,6 +70,7 @@ const updateSlider = () => {
   if (INITIAL_EFFECT === currentEffect) {
     sliderContainer.classList.add('hidden');
   }
+
   sliderContainer.classList.remove('hidden');
 };
 
@@ -77,6 +78,7 @@ const onEffectsChange = (evt) => {
   if(!evt.target.classList.contains('effects__radio')){
     return;
   }
+
   currentEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
   image.className = `effects__preview--${currentEffect.name}`;
   updateSlider();
@@ -84,6 +86,7 @@ const onEffectsChange = (evt) => {
 
 const onSliderUpdate = () => {
   const sliderValue = slider.noUiSlider.get();
+
   image.style.filter = INITIAL_EFFECT === currentEffect ? INITIAL_EFFECT.style : `${currentEffect.style}(${sliderValue}${currentEffect.unit})`;
   effectsValue.value = sliderValue;
 };
@@ -98,6 +101,7 @@ const setEffectsSlider = () => {
     step: INITIAL_EFFECT.step,
     connect: 'lower',
   });
+
   sliderContainer.classList.add('hidden');
   effects.addEventListener('change', onEffectsChange);
   slider.noUiSlider.on('update', onSliderUpdate);

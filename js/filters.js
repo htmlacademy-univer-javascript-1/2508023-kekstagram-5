@@ -10,18 +10,23 @@ let currentFilter = filterId.DEFAULT;
 
 const sortByRandom = () => Math.random() - 0.5;
 
-const sortByComments = (pictureA, pictureB) =>
-  pictureB.comments.length - pictureA.comments.length;
+const sortByComments = (firstPicture, secondPicture) =>
+  secondPicture.comments.length - firstPicture.comments.length;
 
 const filterPictures = (pictures) => {
+  let filteredPictures;
+
   switch (currentFilter) {
     case filterId.RANDOM:
-      return [...pictures].sort(sortByRandom).slice(0, PICTURES_COUNT);
+      filteredPictures = [...pictures].sort(sortByRandom).slice(0, PICTURES_COUNT);
+      break;
     case filterId.DISCUSSED:
-      return [...pictures].sort(sortByComments);
+      filteredPictures = [...pictures].sort(sortByComments);
+      break;
     default:
-      return [...pictures];
+      filteredPictures = [...pictures];
   }
+  return filteredPictures.map((picture, index) => ({ ...picture, id: index }));
 };
 
 const changeFilter = (clickedButton) => {
@@ -38,13 +43,16 @@ const initFilter = (pictures, callback) => {
     }
 
     const clickedButton = evt.target;
+
     if (clickedButton.id === currentFilter) {
       return;
     }
+
     changeFilter(clickedButton, pictures);
     callback(filterPictures(pictures));
   });
+
   callback(filterPictures(pictures));
 };
 
-export { initFilter, filterPictures };
+export { initFilter };

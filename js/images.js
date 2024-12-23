@@ -12,6 +12,7 @@ const makePictures = (picturesToDraw) => {
   picturesToDraw.forEach(({ id, url, description, likes, comments }) => {
     const picture = pictureTemplate.cloneNode(true);
     const img = picture.querySelector('.picture__img');
+
     img.id = id;
     img.src = url;
     img.alt = description;
