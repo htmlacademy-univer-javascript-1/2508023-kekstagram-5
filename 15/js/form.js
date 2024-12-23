@@ -4,7 +4,12 @@ import { showSuccessMessage, showErrorMessage } from './messages.js';
 import { sendData } from './api.js';
 
 const CORRECT_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const HASHTAGS_MAX_VALUE = 5;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SUBMITTING: 'Отправляю...',
+};
 
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
@@ -16,11 +21,6 @@ const hashtags = form.querySelector('.text__hashtags');
 const submitButton = form.querySelector('.img-upload__submit');
 const photoPreview = form.querySelector('.img-upload__preview img');
 const effectsPreviews = form.querySelectorAll('.effects__preview');
-const SubmitButtonText = {
-  IDLE: 'Опубликовать',
-  SUBMITTING: 'Отправляю...',
-};
-
 
 const onDocumentKeyDown = (evt) => {
   if (evt.key === 'Escape') {
@@ -89,7 +89,7 @@ const checkHashtags = (value) => {
   }
 
   const newValue = value.trim().split(/\s+/);
-  const isValidCount = newValue.length <= 5;
+  const isValidCount = newValue.length <= HASHTAGS_MAX_VALUE;
   const isValidPattern = newValue.every((tag) => CORRECT_SYMBOLS.test(tag));
   const isValidUnique = new Set(newValue.map((tag) => tag.toLowerCase())).size === newValue.length;
 

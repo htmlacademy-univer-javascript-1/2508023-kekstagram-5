@@ -1,12 +1,12 @@
-import {pictures as photos} from './images.js';
-import {isEscapeKey} from './util.js';
+import { pictures as photos } from './images.js';
+import { isEscapeKey } from './util.js';
 
 const COMMENTS_TO_LOAD_COUNT = 5;
 
 const commentList = document.querySelector('.social__comments');
 const body = document.querySelector('body');
-const openElement = document.querySelector('.big-picture');
-const closeElement = document.querySelector('.big-picture__cancel');
+const pictureContainer = document.querySelector('.big-picture');
+const closeButton = document.querySelector('.big-picture__cancel');
 const pictures = document.querySelector('.pictures');
 const loadMoreButton = document.querySelector('.social__comments-loader');
 const commentCount = document.querySelector('.social__comment-count');
@@ -20,7 +20,7 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-closeElement.addEventListener('click', closePicture);
+closeButton.addEventListener('click', closePicture);
 
 const makeComment = (comment) => {
   const commentLi = document.createElement('li');
@@ -41,7 +41,7 @@ const makeComment = (comment) => {
   return commentLi;
 };
 
-const onLoadMore = (evt) => {
+const onLoadMoreButtonClick = (evt) => {
   evt.preventDefault();
 
   const maxCommentsToLoad = Math.min(photoItem.comments.length, uploadedComments + COMMENTS_TO_LOAD_COUNT);
@@ -59,10 +59,29 @@ const onLoadMore = (evt) => {
 };
 
 function closePicture() {
-  openElement.classList.add('hidden');
+  pictureContainer.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 }
+
+const loadComments = (photo) => {
+  commentCount.textContent = `${uploadedComments} из ${photo.comments.length} комментариев`;
+  commentList.innerHTML = '';
+  if (photo.comments.length <= COMMENTS_TO_LOAD_COUNT) {
+    photo.comments.forEach((comment) => {
+      commentList.append(makeComment(comment));
+    });
+
+    loadMoreButton.classList.add('hidden');
+
+  } else {
+    photo.comments.slice(0, COMMENTS_TO_LOAD_COUNT).forEach((comment) => {
+      commentList.append(makeComment(comment));
+    });
+
+    loadMoreButton.classList.remove('hidden');
+  }
+};
 
 const onPictureClick = (evt) => {
   const picture = evt.target.closest('.picture');
@@ -70,16 +89,16 @@ const onPictureClick = (evt) => {
   if (picture !== null){
     const pictureId = parseInt(picture.querySelector('.picture__img').id, 10);
     const photo = photos[pictureId];
-    const bigPictureElement = document.querySelector('.big-picture__img img');
+    const bigPicture = document.querySelector('.big-picture__img img');
 
     if (picture) {
       photoItem = photo;
       uploadedComments = COMMENTS_TO_LOAD_COUNT;
-      openElement.classList.remove('hidden');
+      pictureContainer.classList.remove('hidden');
       body.classList.add('modal-open');
       document.addEventListener('keydown', onDocumentKeydown);
-      bigPictureElement.src = photo.url;
-      bigPictureElement.alt = photo.description;
+      bigPicture.src = photo.url;
+      bigPicture.alt = photo.description;
       document.querySelector('.social__caption').textContent = photo.description;
       document.querySelector('.likes-count').textContent = photo.likes;
 
@@ -87,25 +106,9 @@ const onPictureClick = (evt) => {
         uploadedComments = photo.comments.length;
       }
 
-      commentCount.textContent = `${uploadedComments} из ${photo.comments.length} комментариев`;
-      commentList.innerHTML = '';
+      loadComments(photo);
 
-      if (photo.comments.length <= COMMENTS_TO_LOAD_COUNT) {
-        photo.comments.forEach((comment) => {
-          commentList.append(makeComment(comment));
-        });
-
-        loadMoreButton.classList.add('hidden');
-
-      } else {
-        photo.comments.slice(0, COMMENTS_TO_LOAD_COUNT).forEach((comment) => {
-          commentList.append(makeComment(comment));
-        });
-
-        loadMoreButton.classList.remove('hidden');
-      }
-
-      loadMoreButton.addEventListener('click', onLoadMore);
+      loadMoreButton.addEventListener('click', onLoadMoreButtonClick);
     }
   }
 };
