@@ -14,14 +14,19 @@ const sortByComments = (firstPicture, secondPicture) =>
   secondPicture.comments.length - firstPicture.comments.length;
 
 const filterPictures = (pictures) => {
+  let filteredPictures;
+
   switch (currentFilter) {
     case filterId.RANDOM:
-      return [...pictures].sort(sortByRandom).slice(0, PICTURES_COUNT);
+      filteredPictures = [...pictures].sort(sortByRandom).slice(0, PICTURES_COUNT);
+      break;
     case filterId.DISCUSSED:
-      return [...pictures].sort(sortByComments);
+      filteredPictures = [...pictures].sort(sortByComments);
+      break;
     default:
-      return [...pictures];
+      filteredPictures = [...pictures];
   }
+  return filteredPictures.map((picture, index) => ({ ...picture, id: index }));
 };
 
 const changeFilter = (clickedButton) => {
